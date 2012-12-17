@@ -7,7 +7,11 @@ from math import sin
 from remote import RemoteDriver
 
 print "waiting our turn..."
-driver = RemoteDriver("ExampleSine")
+import sys
+if len(sys.argv) > 1 and sys.argv[1] == "emulator":
+    driver = RemoteDriver("ExampleSine", "localhost")
+else:
+    driver = RemoteDriver("ExampleSine")
 print "it's go time!"
 
 offr = 0
@@ -30,3 +34,5 @@ while not driver.stop_signal():
     offg = (offg + 2) % 100
     offb = (offb + 3) % 100
     offa = (offa + 1) % 100
+    
+    sleep(0.05)

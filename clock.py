@@ -34,7 +34,11 @@ from random import choice
 from itertools import chain
 
 print "waiting our turn..."
-driver = RemoteDriver("SubpixelClock")
+import sys
+if len(sys.argv) > 1 and sys.argv[1] == "emulator":
+    driver = RemoteDriver("SubpixelClock", "localhost")
+else:
+    driver = RemoteDriver("SubpixelClock")
 print "it's go time!"
 bulbs = Bulbs(driver)
 

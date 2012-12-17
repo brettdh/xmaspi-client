@@ -7,7 +7,11 @@ from bulbs import Bulbs
 from remote import RemoteDriver
 
 print "waiting our turn..."
-driver = RemoteDriver("ExampleSnake")
+import sys
+if len(sys.argv) > 1 and sys.argv[1] == "emulator":
+    driver = RemoteDriver("ExampleSnake", "localhost")
+else:
+    driver = RemoteDriver("ExampleSnake")
 print "it's go time!"
 bulbs = Bulbs(driver)
 
