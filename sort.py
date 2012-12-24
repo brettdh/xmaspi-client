@@ -89,7 +89,11 @@ class Sort(object):
 
 if __name__=="__main__":
     print 'waiting...'
-    d = RemoteDriver("BubbleSort")
+    import sys
+    if len(sys.argv) > 1 and sys.argv[1] == "emulator":
+        d = RemoteDriver("BubbleSort", "localhost")
+    else:
+        d = RemoteDriver("BubbleSort")
     print 'our turn'
     b = Bulbs(d)
     

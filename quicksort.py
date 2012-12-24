@@ -61,7 +61,11 @@ class QuickSort(Sort):
 
 if __name__=="__main__":
     print 'waiting...'
-    d = RemoteDriver("QuickSort")
+    import sys
+    if len(sys.argv) > 1 and sys.argv[1] == "emulator":
+        driver = RemoteDriver("QuickSort", "localhost")
+    else:
+        d = RemoteDriver("QuickSort")
     print 'our turn'
     
     sorter = QuickSort(Bulbs(d))

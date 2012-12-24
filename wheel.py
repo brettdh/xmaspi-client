@@ -1,7 +1,11 @@
 from time import sleep
 from remote import RemoteDriver
 
-d = RemoteDriver("wheel")
+import sys
+if len(sys.argv) > 1 and sys.argv[1] == "emulator":
+        d = RemoteDriver("wheel", "localhost")
+else:
+        d = RemoteDriver("wheel")
 
 idx = 0
 count_up = True
