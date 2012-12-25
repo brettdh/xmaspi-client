@@ -7,12 +7,15 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import android.util.Log;
+
 public class Remote {
     private static final String DEFAULT_NAME = "threepio";
     private static final String DEFAULT_HOST = "141.212.110.237";
     private static final short DEFAULT_PORT = 4908;
     private static final String START_COMMAND = "let's go\n";
-    private static final String START_RESPONSE = "Go Time!\n";
+    private static final String START_RESPONSE = "Go Time!";
+    private static final String TAG = "xmaspi.client.Remote";
     
     private Socket sock;
     private PrintWriter socketWriter;
@@ -42,28 +45,42 @@ public class Remote {
     
     private void waitToStart() throws IOException {
         socketWriter.print(START_COMMAND);
-        String line = new String("");
-        while (!line.startsWith(START_RESPONSE)) {
+        socketWriter.flush();
+        String line = "";
+        while (line != null && !line.startsWith(START_RESPONSE)) {
             line = socketReader.readLine();
+            if (line != null) {
+                Log.d(TAG, line);
+            } else {
+                Log.d(TAG, "Error: expected a line, but socket was closed");
+            }
         }
     }
     
     public void writeLed(int led_id, int brightness, int red, int green, int blue) throws IOException {
         OutputStream out = sock.getOutputStream();
-        out.write(led_id);
-        out.write(brightness);
-        out.write(red);
-        out.write(green);
-        out.write(blue);
+        byte[] cmd = new byte[] { 
+            (byte) led_id, (byte) brightness, 
+            (byte) red, (byte) green, (byte) blue
+        };
+        out.write(cmd);
+        out.flush();
     }
     
     public void busyWait() throws IOException {
         busyWait(1000);
     }
     
-    public void busyWait(int durationSeconds) throws IOException {
-        while (durationSeconds > 0) {
+    public void busyWait(double durationSeconds) throws IOException {
+        int durationMillis = (int) Math.floor(durationSeconds * 1000);
+        while (durationMillis > 0) {
             writeLed(100, 0, 0, 0, 0); // NOP
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                return;
+            }
+            durationMillis -= 500;
         }
     }
     
