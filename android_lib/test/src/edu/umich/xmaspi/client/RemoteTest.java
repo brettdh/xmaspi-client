@@ -28,7 +28,7 @@ public class RemoteTest extends InstrumentationTestCase {
         for (int brightness = 0; brightness <= 255; brightness += 255) {
             for (int i = 0; i < 100; ++i) {
                 remote.writeLed(i, brightness, 15, 15, 15);
-                Thread.sleep(100);
+                Thread.sleep(5);
             }
         }
         remote.writeLed(100, 0, 0, 0, 0);
@@ -36,7 +36,7 @@ public class RemoteTest extends InstrumentationTestCase {
     }
     
     public void testBusyWait() throws IOException {
-        for (int i = 0; i < 10; ++i) {
+        for (int i = 0; i < 3; ++i) {
             for (int led = 0; led < 100; ++led) {
                 if (led % 2 == (i % 2)) { // RGRGRG... or GRGRGR...
                     remote.writeLed(led, 255, 15, 0, 0);
