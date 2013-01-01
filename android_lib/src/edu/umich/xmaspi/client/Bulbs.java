@@ -18,7 +18,7 @@ public class Bulbs {
         return (int) (Math.pow(a/255.0, gamma_coeff) * 255.0);
     }
     
-    private static class Color {
+    public static class Color {
         public int red;
         public int green;
         public int blue;
@@ -45,19 +45,23 @@ public class Bulbs {
                     blue == other.blue &&
                     alpha == other.alpha);
         }
+        
+        public int[] toArray() {
+            return new int[]{red, green, blue, alpha};
+        }
     }
     
-    private static final int COUNT = 100;
-    private static final Color BLACK  = new Color(0,  0,  0,   0 );
-    private static final Color WHITE  = new Color( 15, 15, 15, 255 );
-    private static final Color RED    = new Color( 15,  0,  0, 255 );
-    private static final Color GREEN  = new Color(  0, 15,  0, 255 );
-    private static final Color BLUE   = new Color(  0,  0, 15, 255 );
-    private static final Color CYAN   = new Color(  0, 15, 15, 255 );
-    private static final Color PURPLE = new Color( 15,  0, 15, 255 );
-    private static final Color YELLOW = new Color( 15, 15,  0, 255 );
+    public static final int COUNT = 100;
+    public static final Color BLACK  = new Color(0,  0,  0,   0 );
+    public static final Color WHITE  = new Color( 15, 15, 15, 255 );
+    public static final Color RED    = new Color( 15,  0,  0, 255 );
+    public static final Color GREEN  = new Color(  0, 15,  0, 255 );
+    public static final Color BLUE   = new Color(  0,  0, 15, 255 );
+    public static final Color CYAN   = new Color(  0, 15, 15, 255 );
+    public static final Color PURPLE = new Color( 15,  0, 15, 255 );
+    public static final Color YELLOW = new Color( 15, 15,  0, 255 );
     
-    private static final Color[] COLORS = {
+    public static final Color[] COLORS = {
         BLACK, WHITE, RED, GREEN, BLUE, CYAN, PURPLE, YELLOW
     };
     
