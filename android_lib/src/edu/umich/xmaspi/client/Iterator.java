@@ -205,12 +205,14 @@ public class Iterator {
                                                   final int steps) {
         return new ColorIterator() {
             private int[] curColor = Arrays.copyOf(startColor, 4);
-            private int[] delta = new int[4];
+            private double[] floatColor = new double[4];
+            private double[] delta = new double[4];
             private int step = 0;
             
             {
                 for (int i = 0; i < 4; ++i) {
-                    delta[i] = (int) ((endColor[i] - startColor[i]) * (1.0 / steps));
+                    floatColor[i] = curColor[i]; 
+                    delta[i] = ((endColor[i] - startColor[i]) * (1.0 / steps));
                 }
             }
             
@@ -218,7 +220,8 @@ public class Iterator {
             public int[] next() {
                 int[] prevColor = Arrays.copyOf(curColor, 4);
                 for (int i = 0; i < 4; ++i) {
-                    curColor[i] += delta[i];
+                    floatColor[i] += delta[i];
+                    curColor[i] = (int) floatColor[i];
                 }
                 ++step;
                 return prevColor;

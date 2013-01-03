@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Random;
 
 import edu.umich.xmaspi.client.Iterator.ColorIterator;
+import edu.umich.xmaspi.client.Iterator.PositionIterator;
 
 import android.test.InstrumentationTestCase;
 
@@ -61,6 +62,29 @@ public class IteratorTest extends InstrumentationTestCase {
             }
             
             Thread.sleep((int) (freq * 1000));
+        }
+    }
+    
+    public void testAllBulbs() throws IOException, InterruptedException {
+        double period = 0.01;
+        double steps = 5 / period;
+        
+        for (int i = 0; i < Bulbs.COUNT; ++i) {
+            PositionIterator pos = Iterator.makeFixedIterator(i);
+            ColorIterator color = null;
+            if (i % 2 == 0) {
+                color = Iterator.makeFaderIterator(Bulbs.RED.toArray(), 
+                                                   Bulbs.GREEN.toArray(), (int) steps);
+            } else {
+                color = Iterator.makeFaderIterator(Bulbs.GREEN.toArray(), 
+                                                   Bulbs.RED.toArray(), (int) steps);
+            }
+            iterator.add(pos, color);
+        }
+        
+        for (int i = 0; i < steps; ++i) {
+            iterator.render();
+            Thread.sleep((int) (period * 1000));
         }
     }
 }
