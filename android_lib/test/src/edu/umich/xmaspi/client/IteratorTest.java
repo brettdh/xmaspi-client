@@ -38,7 +38,7 @@ public class IteratorTest extends InstrumentationTestCase {
     public void testRandomWalk() throws IOException, InterruptedException {
         Random rand = new Random(System.currentTimeMillis());
         
-        double freq = 0.01;
+        double freq = 0.025;
         int steps = (int) (5 / freq);
         int pos = 50;
         for (int i = 0; i < steps; ++i) {
@@ -66,7 +66,7 @@ public class IteratorTest extends InstrumentationTestCase {
     }
     
     public void testAllBulbs() throws IOException, InterruptedException {
-        double period = 0.01;
+        double period = 0.025;
         double steps = 5 / period;
         
         for (int i = 0; i < Bulbs.COUNT; ++i) {

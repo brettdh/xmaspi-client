@@ -65,6 +65,8 @@ public class Remote {
         };
         out.write(cmd);
         out.flush();
+        //Log.d("Remote", String.format("wrote led %d bright %d rgb %d %d %d", 
+        //                              led_id, brightness, red, green, blue));
     }
     
     public void busyWait() throws IOException {

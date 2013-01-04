@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import android.util.Log;
+
 public class Iterator {
     private Bulbs bulbs;
     
@@ -44,6 +46,12 @@ public class Iterator {
      */
     public void add(PositionIterator position, ColorIterator color) {
         iterators.add(new IterPair(position, color));
+    }
+    
+    /** Returns true iff there are no iterators to render.
+     */
+    public boolean isEmpty() {
+        return iterators.isEmpty();
     }
     
     private class BulbUpdate {
@@ -90,14 +98,11 @@ public class Iterator {
                 rightColor[3] = right_brightness;
                 nextColor[3] = left_brightness;
                 
-                frame.add(new BulbUpdate(rightPos, rightColor));
+                bulbs.set(rightPos, rightColor);
             }
-            frame.add(new BulbUpdate((int) Math.floor(nextPos), nextColor));
+            bulbs.set((int) Math.floor(nextPos), nextColor);
         }
         iterators = survivors;
-        for (BulbUpdate update : frame) {
-            bulbs.set(update.position, update.color);
-        }
         bulbs.render();
     }
     
@@ -195,6 +200,7 @@ public class Iterator {
         return new ColorIterator() {
             public boolean hasNext() { return true; }
             public int[] next() {
+                logColor("SolidIterator", color);
                 return color;
             }
         };
@@ -216,7 +222,7 @@ public class Iterator {
                 }
             }
             
-            public boolean hasNext() { return step < steps; }
+            public boolean hasNext() { return step <= steps; }
             public int[] next() {
                 int[] prevColor = Arrays.copyOf(curColor, 4);
                 for (int i = 0; i < 4; ++i) {
@@ -224,6 +230,7 @@ public class Iterator {
                     curColor[i] = (int) floatColor[i];
                 }
                 ++step;
+                logColor("FaderIterator", prevColor);
                 return prevColor;
             }
         };
@@ -263,5 +270,11 @@ public class Iterator {
     
     public static ColorIterator chain(ColorIterator a, ColorIterator b) {
         return new ColorIteratorChain(a, b);
+    }
+
+    private static void logColor(String tag, int[] prevColor) {
+//        Log.d(tag, String.format("Faded color: %d %d %d %d", 
+//                                        prevColor[0], prevColor[1],
+//                                        prevColor[2], prevColor[3]));
     }
 }
